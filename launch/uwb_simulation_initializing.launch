@@ -1,16 +1,16 @@
 <launch>
-  <arg name="map_file" default="$(find-pkg-prefix pozyx_simulation)/maps/map.yaml"/>
+  <arg name="map_file" default="$(find-pkg-prefix ros2_uwb_simulation)/maps/map.yaml"/>
   <node pkg="nav2_map_server" name="map_server" exec="map_server">
     <param name="yaml_filename" value="$(var map_file)" />
   </node>
 
 
-  <node pkg="rviz2" name="rviz2" exec="rviz2" args="-d $(find-pkg-prefix pozyx_simulation)/rviz/config_file.rviz">
+  <node pkg="rviz2" name="rviz2" exec="rviz2" args="-d $(find-pkg-prefix ros2_uwb_simulation)/rviz/config_file.rviz">
   </node>
 
-  <node pkg="pozyx_simulation" name="device_simulation" exec="uwb_simulation.py" output="screen">
+  <node pkg="ros2_uwb_simulation" name="device_simulation" exec="uwb_simulation.py" output="screen">
     <param name="translation" value="[1.4, 0.0, 0.0]" />
   </node>
 
-  <include file="$(find-pkg-prefix pozyx_simulation)/launch/uwb_anchors_set.launch" />
+  <include file="$(find-pkg-prefix ros2_uwb_simulation)/launch/uwb_anchors_set.launch" />
 </launch>

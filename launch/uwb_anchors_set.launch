@@ -1,14 +1,14 @@
 <launch>
-  <node pkg="pozyx_simulation" name="anchor_1" exec="uwb_broadcaster.py" output="screen">
+  <node pkg="ros2_uwb_simulation" name="anchor_1" exec="uwb_broadcaster.py" output="screen">
     <param name="translation" value="[1.4, 2.0, 0.0]" />
   </node>
-  <node pkg="pozyx_simulation" name="anchor_2" exec="uwb_broadcaster.py" output="screen">
+  <node pkg="ros2_uwb_simulation" name="anchor_2" exec="uwb_broadcaster.py" output="screen">
     <param name="translation" value="[-1.4, 2.0, 0.0]" />
   </node>
-  <node pkg="pozyx_simulation" name="anchor_3" exec="uwb_broadcaster.py" output="screen">
+  <node pkg="ros2_uwb_simulation" name="anchor_3" exec="uwb_broadcaster.py" output="screen">
     <param name="translation" value="[1.4, -2.0, 0.0]" />
   </node>
-  <node pkg="pozyx_simulation" name="anchor_4" exec="uwb_broadcaster.py" output="screen">
+  <node pkg="ros2_uwb_simulation" name="anchor_4" exec="uwb_broadcaster.py" output="screen">
     <param name="translation" value="[-1.4, -2.0, 0.0]" />
   </node>
 </launch>

@@ -9,7 +9,7 @@ from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener
 
 from uwb_broadcaster import UwbBroadcaster
-from pozyx_simulation.msg import UwbData
+from ros2_uwb_simulation.msg import UwbData
 
 class UwbSimulation(UwbBroadcaster):
 

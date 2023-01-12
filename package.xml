@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>pozyx_simulation</name>
+  <name>ros2_uwb_simulation</name>
   <version>0.0.1</version>
-  <description>The pozyx_simulation package</description>
+  <description>The ros2_uwb_simulation package</description>
   <maintainer email="bekirbostanci@gmail.com">Bostanci2	</maintainer>
   <license>BSD</license>
   <author email="bekirbostanci@gmail.com">Bekir Bostanci</author>

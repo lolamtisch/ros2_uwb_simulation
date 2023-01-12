@@ -17,7 +17,7 @@ Location of the tag has been taken from the robot position so to use this inform
 ## Initialize
 Use the command below in terminal to start it with default settings
 
-roslaunch pozyx_simulation uwb_simulation_initializing.launch
+roslaunch ros2_uwb_simulation uwb_simulation_initializing.launch
 
 
 ## Publish Topic
@@ -38,7 +38,7 @@ If you want to start manually with custom maps. You can change map and map confi
 
 rosrun map_server map_server map.yaml
 rosrun rviz rviz
-rosrun pozyx_simulation uwb_simulation.py
+rosrun ros2_uwb_simulation uwb_simulation.py
 
 ## Noise 
 Noise has been added to the every UWB ranging data </br> 
@@ -53,7 +53,7 @@ Firstly run gazebo simulation after than run rviz
 4. control robot pose in which parameter  for example ['ground_plane','robot_symbol','turtlebot_waffle'] in thise case index 2 
 5. go repo folder /launch/uwb_manually_initializing.launch file and change modelstate_index parameter 
  ```
-  <node pkg="pozyx_simulation" name="pozyx_simulation"  type="uwb_simulation.py" output="screen">
+  <node pkg="ros2_uwb_simulation" name="ros2_uwb_simulation"  type="uwb_simulation.py" output="screen">
         <param name="modelstate_index" value="2" />
 ```
 For this process get robot or drone real position afther that to place uwb anchor in maps. 
@@ -93,9 +93,9 @@ def uwb_simulate(sensor_pos):
 
 Now pack is ready to run.  
 1. Firstly call anchors 
-`roslaunch pozyx_simulation uwb_anchors_set.launch `
+`roslaunch ros2_uwb_simulation uwb_anchors_set.launch `
 2. After that run main calculation script 
-`roslaunch pozyx_simulation uwb_manually_initializing.launch`
+`roslaunch ros2_uwb_simulation uwb_manually_initializing.launch`
 
 For check all pack is working  
 `rostopic echo /uwb_data_topic` 
@@ -129,9 +129,9 @@ roslaunch turtlebot3_gazebo turtlebot3_world.launch
 export TURTLEBOT3_MODEL=burger
 roslaunch turtlebot3_navigation turtlebot3_navigation.launch 
 
-roslaunch pozyx_simulation uwb_anchors_set.launch 
+roslaunch ros2_uwb_simulation uwb_anchors_set.launch 
 
-rosrun pozyx_simulation uwb_simulation.py 
+rosrun ros2_uwb_simulation uwb_simulation.py 
 
 rosrun advoard_localization kalman_filter_localization.py 
 ```
