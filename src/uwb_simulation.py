@@ -19,6 +19,8 @@ class UwbSimulation(UwbBroadcaster):
         self.declare_parameter('frequency', 1.0)
         self.declare_parameter('range', 30.0)
 
+        self.distance_publisher = self.create_publisher(UwbData, self.get_name()+'/distance', 10)
+
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
@@ -58,7 +60,7 @@ class UwbSimulation(UwbBroadcaster):
         data.distance = sensor_distance
         data.stamp = self.get_clock().now().to_msg()
 
-        self.get_logger().info(str(data))
+        self.distance_publisher.publish(data)
 
 
 if __name__ == "__main__":
