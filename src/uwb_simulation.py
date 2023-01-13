@@ -16,14 +16,13 @@ class UwbSimulation(UwbBroadcaster):
     def __init__(self):
         super().__init__('uwb_simulation')
 
-        self.uwb_config = {
-            'range': 2.5,
-        }
+        self.declare_parameter('frequency', 1.0)
+        self.declare_parameter('range', 30.0)
 
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
-        self.timer = self.create_timer(1.0, self.distance_measurement)
+        self.timer = self.create_timer(self.get_parameter('frequency').get_parameter_value().double_value, self.distance_measurement)
 
     def distance_measurement(self):
 
@@ -42,7 +41,7 @@ class UwbSimulation(UwbBroadcaster):
                 distance = math.sqrt(t.transform.translation.x**2 + t.transform.translation.y**2 + t.transform.translation.z**2)
 
                 # Only continue with frames that are in range
-                if distance < self.uwb_config['range']:
+                if distance < self.get_parameter('range').get_parameter_value().double_value:
                     sensor_frames.append(frame)
 
                     # Add noise to the distance measurement
