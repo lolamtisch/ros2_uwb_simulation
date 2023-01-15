@@ -23,7 +23,6 @@ class UwbPosition(UwbSimulation):
         self.client_map = {}
 
     async def listener_uwb_data(self, uwb_data):
-        self.get_logger().info(str(uwb_data))
         sensor_frames = uwb_data.frames
         sensor_distance = uwb_data.distance
 
@@ -70,7 +69,12 @@ class UwbPosition(UwbSimulation):
         H = []
         Z = []
         expected_ranges = []
+
+        el_length = 0
+
         for i in range(len(ids)):
+            if sensor_pos[i][3] == 1:
+                continue
             lm_id = ids[i]
             meas_range = ranges[i]
             lx = sensor_pos[i][0]
@@ -83,8 +87,10 @@ class UwbPosition(UwbSimulation):
             H.append(H_i)
             Z.append(ranges[i])
             expected_ranges.append(range_exp)
+            el_length += 1
+
         # noise covariance for the measurements
-        R = 0.5 * np.eye(len(ids))
+        R = 0.5 * np.eye(el_length)
         # Kalman gain
         K_help = np.linalg.inv(np.dot(np.dot(H, self.sigma), np.transpose(H)) + R)
         K = np.dot(np.dot(self.sigma, np.transpose(H)), K_help)
@@ -92,9 +98,15 @@ class UwbPosition(UwbSimulation):
         self.mu = self.mu + np.dot(K, (np.array(Z) - np.array(expected_ranges)))
         self.sigma = np.dot(np.eye(len(self.sigma)) - np.dot(K, H), self.sigma)
 
-        self.get_logger().info(f'Correction: {self.mu}')
-
         return self.mu, self.sigma
+
+    def position_callback(self, request, response):
+       response.x = self.mu[0]
+       response.y = self.mu[1]
+       response.z = self.mu[2]
+       response.type = 2
+
+       return response
 
 if __name__ == "__main__":
     rclpy.init()

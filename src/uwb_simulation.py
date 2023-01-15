@@ -62,6 +62,10 @@ class UwbSimulation(UwbBroadcaster):
 
         self.distance_publisher.publish(data)
 
+    def position_callback(self, request, response):
+       response.type = 1
+       return response
+
 
 if __name__ == "__main__":
     rclpy.init()
