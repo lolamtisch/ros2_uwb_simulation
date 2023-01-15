@@ -13,8 +13,8 @@ from ros2_uwb_simulation.msg import UwbData
 
 class UwbSimulation(UwbBroadcaster):
 
-    def __init__(self):
-        super().__init__('uwb_simulation')
+    def __init__(self, node_name = 'uwb_simulation'):
+        super().__init__(node_name)
 
         self.declare_parameter('frequency', 1.0)
         self.declare_parameter('range', 30.0)

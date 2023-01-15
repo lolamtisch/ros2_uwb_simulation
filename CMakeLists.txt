@@ -12,10 +12,12 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(std_msgs)
+find_package(std_srvs)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "srv/UwbPosition.srv"
   "msg/UwbData.msg"
-  DEPENDENCIES std_msgs
+  DEPENDENCIES std_msgs std_srvs
 )
 
 ament_export_dependencies(rosidl_default_runtime)
@@ -23,6 +25,7 @@ ament_export_dependencies(rosidl_default_runtime)
 install(PROGRAMS
   src/uwb_simulation.py
   src/uwb_broadcaster.py
+  src/uwb_position.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
