@@ -96,6 +96,9 @@ class UwbPosition(UwbSimulation):
             expected_ranges.append(range_exp)
             el_length += 1
 
+        if el_length == 0:
+            return
+
         # noise covariance for the measurements
         R = 0.5 * np.eye(el_length)
         # Kalman gain
