@@ -11,7 +11,9 @@ class UwbPosition(UwbSimulation):
     def __init__(self):
         super().__init__('uwb_position')
 
-        self.mu = [0, 0, 0.0]
+        translation = self.get_parameter('translation').get_parameter_value().double_array_value
+
+        self.mu = [translation[0], translation[1], translation[2]]
         self.sigma = np.array([[1.0, 0.0, 0.0],[0.0, 1.0, 0.0],[0.0, 0.0, 1.0]])
 
         self.subscription = self.create_subscription(

@@ -15,7 +15,7 @@ class UwbBroadcaster(Node):
        self.declare_parameter('translation', [0.0, 0.0, 0.0])
 
        self.tf_broadcaster = TransformBroadcaster(self)
-       self.position_srv = self.create_service(UwbPosition, self.get_name()+'/get_position', self.position_callback)
+       self.position_srv = self.create_service(UwbPosition, self.get_name()+'/get_position', self.position_callback, callback_group=rclpy.callback_groups.ReentrantCallbackGroup())
 
        self.timer = self.create_timer(0.1, self.real_position_publish)
        self.uwb_frame_id = 'uwb_'+self.get_name()
