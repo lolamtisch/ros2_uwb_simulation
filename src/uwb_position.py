@@ -6,12 +6,17 @@ from uwb_simulation import UwbSimulation
 from ros2_uwb_simulation.srv import UwbPosition as UwbPositionSrv
 from ros2_uwb_simulation.msg import UwbData
 
+from geometry_msgs.msg import TransformStamped
+
 class UwbPosition(UwbSimulation):
 
     def __init__(self):
         super().__init__('uwb_position')
 
+        self.declare_parameter('debug', False)
+
         translation = self.get_parameter('translation').get_parameter_value().double_array_value
+        self.debug = self.get_parameter('debug').get_parameter_value().bool_value
 
         self.mu = [translation[0], translation[1], translation[2]]
         self.sigma = np.array([[1.0, 0.0, 0.0],[0.0, 1.0, 0.0],[0.0, 0.0, 1.0]])
@@ -100,7 +105,8 @@ class UwbPosition(UwbSimulation):
         self.mu = self.mu + np.dot(K, (np.array(Z) - np.array(expected_ranges)))
         self.sigma = np.dot(np.eye(len(self.sigma)) - np.dot(K, H), self.sigma)
 
-        return self.mu, self.sigma
+        if self.debug:
+            self.debug_position()
 
     def position_callback(self, request, response):
        response.x = self.mu[0]
@@ -109,6 +115,23 @@ class UwbPosition(UwbSimulation):
        response.type = 2
 
        return response
+
+    def debug_position(self):
+        t = TransformStamped()
+
+        t.header.stamp = self.get_clock().now().to_msg()
+        t.header.frame_id = 'map'
+
+        t.child_frame_id = 'debug_'+self.get_name()
+        t.transform.translation.x = self.mu[0]
+        t.transform.translation.y = self.mu[1]
+        t.transform.translation.z = self.mu[2]
+        t.transform.rotation.x = 0.0
+        t.transform.rotation.y = 0.0
+        t.transform.rotation.z = 0.0
+        t.transform.rotation.w = 1.0
+
+        self.tf_broadcaster.sendTransform(t)
 
 if __name__ == "__main__":
     rclpy.init()
