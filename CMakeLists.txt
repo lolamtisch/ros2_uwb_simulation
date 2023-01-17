@@ -16,6 +16,7 @@ find_package(std_srvs)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/UwbPosition.srv"
+  "srv/RealPosition.srv"
   "msg/UwbData.msg"
   DEPENDENCIES std_msgs std_srvs
 )
