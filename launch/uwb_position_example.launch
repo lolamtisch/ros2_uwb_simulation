@@ -1,0 +1,16 @@
+<launch>
+  <node pkg="rviz2" name="rviz2" exec="rviz2" args="-d $(find-pkg-prefix ros2_uwb_simulation)/rviz/config_file.rviz">
+  </node>
+
+  <node pkg="ros2_uwb_simulation" name="device_position" exec="uwb_position.py" output="screen">
+    <param name="translation" value="[-1.4, 0.0, 0.0]" />
+    <param name="debug" value="True" />
+  </node>
+
+  <node pkg="ros2_uwb_simulation" name="device_position2" exec="uwb_position.py" output="screen">
+    <param name="translation" value="[-3.4, 0.0, 0.0]" />
+    <param name="debug" value="True" />
+  </node>
+
+  <include file="$(find-pkg-prefix ros2_uwb_simulation)/launch/uwb_anchors_set.launch" />
+</launch>
