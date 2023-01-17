@@ -11,9 +11,9 @@ from tf2_ros.transform_listener import TransformListener
 from uwb_broadcaster import UwbBroadcaster
 from ros2_uwb_simulation.msg import UwbData
 
-class UwbSimulation(UwbBroadcaster):
+class UwbDistance(UwbBroadcaster):
 
-    def __init__(self, node_name = 'uwb_simulation'):
+    def __init__(self, node_name = 'uwb_distance'):
         super().__init__(node_name)
 
         self.declare_parameter('frequency', 1.0)
@@ -69,7 +69,7 @@ class UwbSimulation(UwbBroadcaster):
 
 if __name__ == "__main__":
     rclpy.init()
-    node = UwbSimulation()
+    node = UwbDistance()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:

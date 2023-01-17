@@ -8,7 +8,7 @@
   <node pkg="rviz2" name="rviz2" exec="rviz2" args="-d $(find-pkg-prefix ros2_uwb_simulation)/rviz/config_file.rviz">
   </node>
 
-  <node pkg="ros2_uwb_simulation" name="device_simulation" exec="uwb_simulation.py" output="screen">
+  <node pkg="ros2_uwb_simulation" name="device_simulation" exec="uwb_distance.py" output="screen">
     <param name="translation" value="[1.4, 0.0, 0.0]" />
   </node>
 

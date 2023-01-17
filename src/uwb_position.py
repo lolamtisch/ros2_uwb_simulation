@@ -2,13 +2,13 @@
 import numpy as np
 import rclpy
 
-from uwb_simulation import UwbSimulation
+from uwb_distance import UwbDistance
 from ros2_uwb_simulation.srv import UwbPosition as UwbPositionSrv
 from ros2_uwb_simulation.msg import UwbData
 
 from geometry_msgs.msg import TransformStamped
 
-class UwbPosition(UwbSimulation):
+class UwbPosition(UwbDistance):
 
     def __init__(self):
         super().__init__('uwb_position')

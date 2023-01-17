@@ -24,7 +24,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 ament_export_dependencies(rosidl_default_runtime)
 
 install(PROGRAMS
-  src/uwb_simulation.py
+  src/uwb_distance.py
   src/uwb_broadcaster.py
   src/uwb_position.py
   DESTINATION lib/${PROJECT_NAME}
