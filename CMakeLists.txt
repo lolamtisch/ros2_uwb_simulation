@@ -27,6 +27,7 @@ install(PROGRAMS
   src/uwb_distance.py
   src/uwb_broadcaster.py
   src/uwb_position.py
+  src/test.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

@@ -12,5 +12,7 @@
     <param name="debug" value="True" />
   </node>
 
+  <node pkg="ros2_uwb_simulation" name="test" exec="test.py" output="screen" />
+
   <include file="$(find-pkg-prefix ros2_uwb_simulation)/launch/uwb_anchors_set.launch" />
 </launch>
