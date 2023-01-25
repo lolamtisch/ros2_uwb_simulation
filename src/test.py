@@ -23,7 +23,7 @@ class Test(Node):
         }
 
         self.uwb2X = {
-            "v": 0.0,
+            "v": -3.4,
             "d": 1,
         }
 
