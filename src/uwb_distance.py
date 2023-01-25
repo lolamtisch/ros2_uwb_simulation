@@ -18,6 +18,7 @@ class UwbDistance(UwbBroadcaster):
 
         self.declare_parameter('frequency', 0.25)
         self.declare_parameter('range', 30.0)
+        self.declare_parameter('stddev', 0.03)
 
         self.distance_publisher = self.create_publisher(UwbData, self.get_name()+'/distance', 10)
 
@@ -47,7 +48,8 @@ class UwbDistance(UwbBroadcaster):
                     sensor_frames.append(frame)
 
                     # Add noise to the distance measurement
-                    noise_distance = distance + np.random.normal(0, distance*0.015,1)[0]
+                    noise_distance = distance + \
+                        np.random.normal(0, self.get_parameter('stddev').get_parameter_value().double_value, 1)[0]
 
                     sensor_distance.append(noise_distance)
 
