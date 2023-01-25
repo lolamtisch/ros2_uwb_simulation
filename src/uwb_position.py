@@ -100,7 +100,15 @@ class UwbPosition(UwbDistance):
             return
 
         # noise covariance for the measurements
-        R = 0.5 * np.eye(el_length)
+        R = 0.1 * np.eye(el_length)
+
+        # State transition matrix
+        F = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])    # assuming constant velocity model
+
+        # propagate the state estimate using the motion model
+        self.mu = np.dot(F, self.mu)
+        self.sigma = np.dot(np.dot(F, self.sigma), np.transpose(F)) + np.array([[0.5, 0, 0], [0, 0.5, 0], [0, 0, 0.5]])
+
         # Kalman gain
         K_help = np.linalg.inv(np.dot(np.dot(H, self.sigma), np.transpose(H)) + R)
         K = np.dot(np.dot(self.sigma, np.transpose(H)), K_help)

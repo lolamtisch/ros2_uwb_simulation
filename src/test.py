@@ -35,7 +35,7 @@ class Test(Node):
     def real_position_publish(self):
         t = RealPosition.Request()
 
-        self.uwb1Y["v"] += 0.01 * self.uwb1Y["d"]
+        self.uwb1Y["v"] += 0.005 * self.uwb1Y["d"]
 
         if self.uwb1Y["v"] > 1.0:
             self.uwb1Y["d"] = -1
@@ -50,14 +50,14 @@ class Test(Node):
 
         t = RealPosition.Request()
 
-        self.uwb2X["v"] += 0.05 * self.uwb2X["d"]
+        self.uwb2X["v"] += 0.025 * self.uwb2X["d"]
 
         if self.uwb2X["v"] > -2.2:
             self.uwb2X["d"] = -1
         elif self.uwb2X["v"] < -5.2:
             self.uwb2X["d"] = 1
 
-        self.uwb2Y["v"] += 0.05 * self.uwb2Y["d"]
+        self.uwb2Y["v"] += 0.025 * self.uwb2Y["d"]
 
         if self.uwb2Y["v"] > 1.0:
             self.uwb2Y["d"] = -1

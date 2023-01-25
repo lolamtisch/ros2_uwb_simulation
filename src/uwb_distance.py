@@ -16,7 +16,7 @@ class UwbDistance(UwbBroadcaster):
     def __init__(self, node_name = 'uwb_distance'):
         super().__init__(node_name)
 
-        self.declare_parameter('frequency', 1.0)
+        self.declare_parameter('frequency', 0.25)
         self.declare_parameter('range', 30.0)
 
         self.distance_publisher = self.create_publisher(UwbData, self.get_name()+'/distance', 10)
