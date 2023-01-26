@@ -60,7 +60,3 @@ Listener:    `ros2 topic echo /device_simulation/distance`
 ### Position Estimation
 Main script: `ros2 launch launch/uwb_position_example.launch`  
 
-## Noise 
-The noise bellow is added to every UWB ranging request  
-
-np.random.normal(0, uwb_dist*0.015,1)
