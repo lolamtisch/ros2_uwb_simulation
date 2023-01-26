@@ -3,6 +3,7 @@ import numpy as np
 import rclpy
 
 from uwb_distance import UwbDistance
+from scipy.optimize import least_squares
 from ros2_uwb_simulation.srv import UwbPosition as UwbPositionSrv
 from ros2_uwb_simulation.msg import UwbData
 
@@ -14,9 +15,11 @@ class UwbPosition(UwbDistance):
         super().__init__('uwb_position')
 
         self.declare_parameter('debug', False)
+        self.declare_parameter('algorithm', 'least_squares')
 
         translation = self.get_parameter('translation').get_parameter_value().double_array_value
         self.debug = self.get_parameter('debug').get_parameter_value().bool_value
+        self.algo = self.get_parameter('algorithm').get_parameter_value().string_value
 
         self.mu = [translation[0], translation[1], translation[2]]
         self.sigma = np.array([[1.0, 0.0, 0.0],[0.0, 1.0, 0.0],[0.0, 0.0, 1.0]])
@@ -52,7 +55,39 @@ class UwbPosition(UwbDistance):
             else:
                 position.append([result.x, result.y, result.z, result.type])
 
-        self.correction_step(sensor_frames, sensor_distance, position)
+        if self.algo == 'least_squares':
+            self.least_squares_step(sensor_frames, sensor_distance, position)
+        else:
+            self.correction_step(sensor_frames, sensor_distance, position)
+
+    def least_squares_step(self, sensor_frames, sensor_distance, sensor_pos):
+        landmarks = []
+        distances = []
+        for i in range(len(sensor_pos)):
+            if sensor_pos[i][3] == 1:
+                continue
+            landmarks.append(
+                np.array([sensor_pos[i][0], sensor_pos[i][1], sensor_pos[i][2]]))
+            distances.append(sensor_distance[i])
+
+        x0 = np.array(self.mu)
+
+        # Function to calculate the residuals
+        def residuals(x, p, d):
+            res = []
+            for i in range(len(p)):
+                res.append(np.linalg.norm(x - p[i]) - d[i])
+            return res
+
+        res_lsq = least_squares(residuals, x0, args=(landmarks, distances))
+
+        position = res_lsq.x
+        position[2] = 0.0
+
+        self.mu = position
+
+        if self.debug:
+            self.debug_position()
 
     def correction_step(self, sensor_frames, sensor_distance, sensor_pos):
         # updates the belief, i.e., mu and sigma, according to the
