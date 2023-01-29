@@ -1,52 +1,52 @@
 # ROS2 Uwb Simulation
-This package is a migration of [ROS Pozyx Simulation](https://github.com/bekirbostanci/pozyx_simulation) to ROS2 and can be used to simulate Ultra-Wideband range measurements.
+This package is a migration of [ROS Pozyx Simulation](https://github.com/bekirbostanci/pozyx_simulation) to ROS2 and can be used to simulate Ultra-Wideband hardware.
 
 
 ![](https://raw.githubusercontent.com/bekirbostanci/ros_pozyx_simulation/master/docs/1.png)
 
-## Structure
-This package provides 3 different node types. First a broadcaster which contain the important parts to stationary anchors. The second one is the distance estiamtion node, it publishes everything the distance all other UWB nodes. The 3rd one is a small showcase for a postion estimation with the help an Kalman filter. All 3 nodes types can be used in the same simulation.
+## Description
+This package offers 3 node types that can be used simultaneously. When moving to real hardware the 3 nodes need to be swapped with the corresponding hardwares implementations. Although the package includes a position estimation node, it is only intended to represent built-in hardware capabilities. Improved results can be achieved, for example, by using a Kalman filter with an IMU sensor fusion.
 
 ## Broadcaster node
-The task of the broadcaster is to create static landmark anchors with predifined positions in the simulation.
+The broadcaster's task is to create a static landmark anchors with predefined positions in the simulation.
 
 > [**Script**](src/uwb_broadcaster.py)   
 
 > [**Instantiation**](launch/uwb_anchors_set.launch#L2)
 
 > **Service:** <[Message](srv/RealPosition.srv)> `{name}/set_real_position`  
-> *Can be used to change the position during runtime*  
+> *For changing the real position during runtime*  
 
 > **Service:** <[Message](srv/UwbPosition.srv)> `{name}/get_position`  
 
 ## Distance node
-Represents an UWB radio which can retrive the distance to other UWB recivers. This node should then be replaced when using real Hadware.
+The distance estimation node represents a simple UWB receiver that can estimate distances to other receivers in range. The distance measurements are published with added noise of 0.02 standard deviation.
 
 > [**Script**](src/uwb_position.py)   
 
 > [**Instantiation**](launch/uwb_distance_example.launch#L11)
 
 > **Service:** <[Message](srv/RealPosition.srv)> `{name}/set_real_position`  
-> *Endpoint to update the real position in the simulation world. Because it is only used for the simulation, it can be dropped when moving to real hardware.*  
+> *For changing the real position during runtime. Not needed with real hardware.*  
 
 > **Service:** <[Message](srv/UwbPosition.srv)> `{name}/get_position`  
-> *Returns no position, Because this node does not know its position only distances*  
+> *This node returns no position as it only knows distances, not its own position.*  
 
 > **Topic:** <[Message](msg/UwbData.msg)> `{name}/distance`  
 > *The distances to all other UWB clients in range*  
 
 ## Position node
-Small example script for a distributed UWB position estimation with the use of a Kalman filter. Based on [bekirbostanci/ieuagv_localization](https://github.com/bekirbostanci/ieuagv_localization/blob/master/src/kalman_filter_localization.py#L84).
+The position node represents a simple localization engine that sometimes hardware provides. It calculates the position using the least squares method.
 
 > [**Script**](src/uwb_position.py) 
 
 > [**Instantiation**](launch/uwb_position_example.launch#L5)  
 
 > **Service:** <[Message](srv/RealPosition.srv)> `{name}/set_real_position`  
-> *Endpoint to update the real position in the simulation world*  
+> *For changing the real position during runtime. Not needed with real hardware.*  
 
 > **Service:** <[Message](srv/UwbPosition.srv)> `{name}/get_position`  
-> *Returns the estimated position of the simulation*  
+> *Returns the estimated position in the simulation*  
 
 > **Topic:** <[Message](msg/UwbData.msg)> `{name}/distance`  
 > *The distances to all other UWB clients in range*  
